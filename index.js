@@ -3,9 +3,8 @@ Challenge:
 Make it so that when you click the 'Add to cart' button, whatever is written in the input field should be console logged.
 */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
-
+import { initializeApp } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
+import { getDatabase, ref, push, onValue } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
 const appSettings = {
     databaseURL:"https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
@@ -26,17 +25,20 @@ addButtonEl.addEventListener("click", function() {
 
     clearInputFieldEl()
 
-    appendItemToShoppingListEl(inputValue)
 })
 
 onValue(shoppingListInDB, function(snapshot) {
-    let itemsArrray = Object.value(snapshot.val())
+    let itemsArrray = Object.entries(snapshot.val())
 })
     clearShoppingListEl()
     shoppingListEl.innerHTML = ""
 
     for (let i=0; i< itemsArrray.length; i++) {
-    appendItemToShoppingListEl(itemsArrray[i])
+        let currentItem = itemsArrray[i]
+        let currentItemID = currentItem[0]
+        let currentItemValue = currentItem[1]
+
+    appendItemToShoppingListEl(currentItemValue)
     }
 
 function clearShoppingListEl(){
@@ -46,6 +48,20 @@ function clearInputFieldEl() {
     inputFieldEl.value = ""
 }
 
-function appendItemToShoppingListEl(itemValue) {
-    shoppingListEl.innerHTML += `<li>${itemValue}</li>`
+function appendItemToShoppingListEl(item) {
+    let itemID = item[0]
+    let itemValue = item[1] 
+
+    let newEl = document.createElement("li")
+
+    newEl.textContent = itemValue
+
+    newEl.addEventListener ("click", function() {
+        let exactLocationofItemInDB = ref (database, `shoppingLis/${itemID}`)
+
+    })
+    remove(exactLocationofItemInDB)
+    
+    shoppingListEl.append(newEl)
 }
+shoppingListEl.innerHTML += `<li>${itemValue}</li>`
