@@ -1,13 +1,8 @@
-/*
-Challenge:
-Make it so that when you click the 'Add to cart' button, whatever is written in the input field should be console logged.
-*/
-
 import { initializeApp } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
 import { getDatabase, ref, push, onValue } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
 const appSettings = {
-    databaseURL:"https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    databaseURL:"https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app"
 }
 
 const app = initializeApp(appSettings)
@@ -28,18 +23,23 @@ addButtonEl.addEventListener("click", function() {
 })
 
 onValue(shoppingListInDB, function(snapshot) {
-    let itemsArrray = Object.entries(snapshot.val())
-})
+    if (snapshot.exists()) {
+        let itemsArrray = Object.entries(snapshot.val())
+
     clearShoppingListEl()
-    shoppingListEl.innerHTML = ""
 
     for (let i=0; i< itemsArrray.length; i++) {
         let currentItem = itemsArrray[i]
         let currentItemID = currentItem[0]
         let currentItemValue = currentItem[1]
 
-    appendItemToShoppingListEl(currentItemValue)
+    appendItemToShoppingListEl(currentItem)
     }
+}
+    else{ 
+        shoppingListEl.innerHTML = "No items here...yet"
+    }
+})
 
 function clearShoppingListEl(){
     shoppingListEl.innerHTML = ""
@@ -57,11 +57,11 @@ function appendItemToShoppingListEl(item) {
     newEl.textContent = itemValue
 
     newEl.addEventListener ("click", function() {
-        let exactLocationofItemInDB = ref (database, `shoppingLis/${itemID}`)
+        let exactLocationofItemInDB = ref (database, `shoppingList/${itemID}`)
 
+        remove(exactLocationofItemInDB)
     })
-    remove(exactLocationofItemInDB)
+    
     
     shoppingListEl.append(newEl)
 }
-shoppingListEl.innerHTML += `<li>${itemValue}</li>`
