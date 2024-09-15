@@ -1,8 +1,8 @@
-import { initializeApp } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
-import { getDatabase, ref, push, onValue } from "https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app/"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
 const appSettings = {
-    databaseURL:"https://playground-cart-tham-default-rtdb.asia-southeast1.firebasedatabase.app"
+    databaseURL:"https://mobile-shopping-app-7758e-default-rtdb.europe-west1.firebasedatabase.app/"
 }
 
 const app = initializeApp(appSettings)
@@ -28,7 +28,7 @@ onValue(shoppingListInDB, function(snapshot) {
 
     clearShoppingListEl()
 
-    for (let i=0; i< itemsArrray.length; i++) {
+    for (let i=0; i < itemsArrray.length; i++) {
         let currentItem = itemsArrray[i]
         let currentItemID = currentItem[0]
         let currentItemValue = currentItem[1]
@@ -44,6 +44,7 @@ onValue(shoppingListInDB, function(snapshot) {
 function clearShoppingListEl(){
     shoppingListEl.innerHTML = ""
 }
+
 function clearInputFieldEl() {
     inputFieldEl.value = ""
 }
